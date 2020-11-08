@@ -1,0 +1,180 @@
+create table customers (
+customer_id int primary key,
+customer_name varchar2(50) not null,
+customer_phone int);
+
+CREATE SEQUENCE customer_id_seq;
+
+
+CREATE TRIGGER customer_bi
+BEFORE INSERT ON customers
+FOR EACH ROW
+BEGIN
+  SELECT customer_id_seq.nextval
+  INTO :new.customer_id
+  FROM dual;
+END;
+/
+
+_________________________________________________________
+create table branch (
+branch_id int primary key,
+branch_name varchar2(50) not null,
+manager_name varchar2(50));
+
+CREATE SEQUENCE branch_id_seq;
+
+
+CREATE TRIGGER branch_bi
+BEFORE INSERT ON branch
+FOR EACH ROW
+BEGIN
+  SELECT branch_id_seq.nextval
+  INTO :new.branch_id
+  FROM dual;
+END;
+/
+
+
+insert statement
+
+insert into branch(branch_name,manager_name) values('Chandni Chowk','Samsung Houston');
+insert into branch(branch_name,manager_name) values('Paranthe vali gali','Simon Rai');
+insert into branch(branch_name,manager_name) values('Connaught place','Devraj Singh');
+insert into branch(branch_name,manager_name) values('Sarojini Nagar','Nirmal Suri');
+insert into branch(branch_name,manager_name) values('Nizzamuddin Lane','Hamna Giri');
+insert into branch(branch_name,manager_name) values('Shahpurjat','Sushi Rajguru');
+
+___________________________________________________
+create table employees (
+employee_id int primary key,
+employee_name varchar2(50) not null,
+password varchar(20),
+designation varchar2(50) not null,
+branch_id int references branch(branch_id),
+emp_phone int not null,
+salary int,
+leaves int,
+total_working_days int);
+
+CREATE SEQUENCE employee_id_seq;
+
+
+CREATE TRIGGER employee_bi
+BEFORE INSERT ON employees
+FOR EACH ROW
+BEGIN
+  SELECT employee_id_seq.nextval
+  INTO :new.employee_id
+  FROM dual;
+END;
+/
+
+Insert statement
+
+insert into employees(employee_name,password,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Samsung Houston','welcome123','manager',1,9527252789,30000,8,24);
+insert into employees(employee_name,password,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Simon Rai','evergreen','manager',2,9525672583,40000,8,24);
+insert into employees(employee_name,password,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Devraj Singh','neem',3,867775329,50000,8,24);
+insert into employees(employee_name,password,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Nirmal Suri','wonderla','manager',4,756767189,35000,8,24);
+insert into employees(employee_name,password,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Hamna Giri','siren','manager',5,227773939,30600,8,24);
+insert into employees(employee_name,password,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Sushi Rajguru','goodie','manager',6,683323245,30000,8,24);
+insert into employees(employee_name,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Sandeep','Sales',1,667762789,20000,8,24);
+insert into employees(employee_name,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Raman','Sales',1,9525763789,20000,8,24);
+insert into employees(employee_name,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Raju','Sales',2,9557767889,10000,8,24);
+insert into employees(employee_name,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Yogi','Sales',3,957788999,120000,8,24);
+insert into employees(employee_name,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Meena','Sales',4,956657789,23000,8,24);
+insert into employees(employee_name,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('Sanjay','Maintenance',1,965677889,20000,8,24);
+insert into employees(employee_name,designation,branch_id,emp_phone,salary,leaves,total_working_days) values('SHahid','Cleaner',1,955667789,20000,8,24);
+_____________________________________________________
+create table products (
+product_id int primary key,
+product_name varchar2(25),
+branch_id int references branch(branch_id),
+size_product int,
+qty int,
+price int,
+design int);
+
+
+CREATE SEQUENCE product_id_seq;
+
+
+CREATE TRIGGER product_bi
+BEFORE INSERT ON products
+FOR EACH ROW
+BEGIN
+  SELECT product_id_seq.nextval
+  INTO :new.product_id
+  FROM dual;
+END;
+/
+___________________________________________________________________
+create table orders (
+order_id int primary key,
+customer_id int references customers(customer_id),
+product_id int references products(product_id),
+branch_id int references branch(branch_id),
+size_product int,
+qty int,
+amount int,
+Date_purchased date);
+
+
+CREATE SEQUENCE order_id_seq;
+
+
+CREATE TRIGGER order_bi
+BEFORE INSERT ON orders
+FOR EACH ROW
+BEGIN
+  SELECT order_id_seq.nextval
+  INTO :new.order_id
+  FROM dual;
+END;
+/
+_____________________________________________________________________
+create table request_order(
+request_id int primary key,
+branch_id int references branch(branch_id),
+manager_id int references employees(employee_id),
+product_id int,
+product_size int,
+product_design int,
+qty int);
+
+CREATE SEQUENCE request_id_seq;
+
+
+CREATE TRIGGER request_bi
+BEFORE INSERT ON request_order
+FOR EACH ROW
+BEGIN
+  SELECT request_id_seq.nextval
+  INTO :new.request_id
+  FROM dual;
+END;
+/
+_______________________________________________________________________
+
+create table feedback(
+review_id int primary key,
+branch_id int references branch(branch_id),
+customer_name varchar2(20),
+product_name varchar2(20),
+review varchar2(20));
+
+CREATE SEQUENCE review_id_seq;
+
+
+CREATE TRIGGER feedback_bi
+BEFORE INSERT ON feedback
+FOR EACH ROW
+BEGIN
+  SELECT review_id_seq.nextval
+  INTO :new.review_id
+  FROM dual;
+END;
+/
+
+__________________________________________________________________________
+
